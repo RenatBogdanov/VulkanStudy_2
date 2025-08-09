@@ -1,12 +1,35 @@
-#include <vulkan/vulkan.h>  // подключаем заголовки Vulkan
+#include <vulkan/vulkan.h>  // РїРѕРґРєР»СЋС‡Р°РµРј Р±РёР±Р»РёРѕС‚РµРєСѓ Vulkan
 #include <iostream>
 
 int main() {
-    uint32_t extensionCount{};    // переменная для получения количества расширений       
-    // получаем количество доступных расширений Vulkan
-    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
-    // выводим результат
-    std::cout << extensionCount << " extensions available\n";
+    VkInstance instance; // РѕР±СЉРµРєС‚, РєРѕС‚РѕСЂС‹Р№ РЅР°РґРѕ СЃРѕР·РґР°С‚СЊ
+
+    // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїСЂРёР»РѕР¶РµРЅРёРё
+    VkApplicationInfo appInfo = {};
+    appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    appInfo.pApplicationName = "Ren's Vulkan App";
+    appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.pEngineName = "No Engine";
+    appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    appInfo.apiVersion = VK_API_VERSION_1_0;
+
+    VkInstanceCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    createInfo.pApplicationInfo = &appInfo;
+
+    // СЃРѕР·РґР°РµРј РѕР±СЉРµРєС‚ VkInstance
+    VkResult result = vkCreateInstance(&createInfo, nullptr, &instance);
+    // РµСЃР»Рё РЅРµ СѓРґР°Р»РѕСЃСЊ СЃРѕР·РґР°С‚СЊ РѕР±СЉРµРєС‚ VKInstance
+    if (result != VK_SUCCESS) {
+        std::cout << "Unable to create VKInstance" << std::endl;
+        return 1;
+    }
+    // РґР»СЏ С‚РµСЃС‚Р° РІС‹РІРѕРґРёРј РЅР°Р·РІР°РЅРёРµ РїСЂРёР»РѕР¶РµРЅРёСЏ Рё РµРіРѕ РІРµСЂСЃРёСЋ
+    std::cout << appInfo.pApplicationName << std::endl;
+    std::cout << appInfo.applicationVersion << std::endl;  // 4194304 РёР»Рё 10000000000000000000000
+
+    // СѓРґР°Р»РµРЅРёРµ VKInstance
+    vkDestroyInstance(instance, nullptr);
 
     return 0;
 }
